@@ -131,3 +131,7 @@ print("Привет, мир!")
 Some content
 
 
+# Автоматические ссылки
+<http://example.com/>
+
+<address@example.com>
