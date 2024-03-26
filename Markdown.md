@@ -135,3 +135,9 @@ Some content
 <http://example.com/>
 
 <address@example.com>
+
+
+# HTML
+### Markdown поддерживает использование прямого HTML внутри документа, так что вы можете использовать любые HTML-теги для более сложного оформления:
+
+<kbd>CTRL</kbd> + <kbd>P</kbd>
