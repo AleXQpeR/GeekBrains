@@ -122,3 +122,12 @@ print("Привет, мир!")
 
 ## <a id="title1">Заголовок 1</a>
 Какой-то контент
+
+
+# Ссылка на заголовок на английском
+[Some title 1](#some-title-1)
+
+## Some Title 1
+Some content
+
+
