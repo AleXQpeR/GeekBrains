@@ -307,3 +307,12 @@ git reset
 ```
 
 
+# 22. Добавление удалённого репозитория
+
+Добавить удалённый репозиторий можно параметром `remote add`, указав _shortname_ и _url_ требуемого репозитория.
+
+```
+git remote add awesomeapp https://github.com/someurl..
+```
+
+
