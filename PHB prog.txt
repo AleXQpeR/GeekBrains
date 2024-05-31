@@ -1,0 +1,116 @@
+def work_with_phonebook():
+    choice = show_menu()
+    phone_book = read_txt('phonebook.txt')
+
+    while choice != 8 and choice is not None:
+        if choice == 1:
+            print_result(phone_book)
+        elif choice == 2:
+            last_name = input('Введите фамилию: ')
+            print(find_by_lastname(phone_book, last_name))
+        elif choice == 3:
+            last_name = input('Введите фамилию: ')
+            new_number = input('Введите новый номер: ')
+            print(change_number(phone_book, last_name, new_number))
+        elif choice == 4:
+            lastname = input('Введите фамилию: ')
+            print(delete_by_lastname(phone_book, lastname))
+        elif choice == 5:
+            number = input('Введите номер: ')
+            print(find_by_number(phone_book, number))
+        elif choice == 6:
+            user_data = input('Введите новые данные (Фамилия, Имя, Телефон, Описание): ')
+            add_user(phone_book, user_data)
+            write_txt('phonebook.txt', phone_book)
+        elif choice == 7:
+            target_file = input('Введите имя целевого файла: ')
+            line_numbers = input('Введите номера строк для копирования (через запятую): ')
+            line_numbers = [int(num.strip()) for num in line_numbers.split(',')]
+            for line_number in line_numbers:
+                print(copy_data_between_files('phonebook.txt', target_file, line_number))
+
+        choice = show_menu()
+
+def show_menu():
+    print("\nВыберите необходимое действие:\n"
+          "1. Отобразить весь справочник\n"
+          "2. Найти абонента по фамилии\n"
+          "3. Изменить номер абонента\n"
+          "4. Удалить абонента по фамилии\n"
+          "5. Найти абонента по номеру телефона\n"
+          "6. Добавить абонента в справочник\n"
+          "7. Скопировать данные\n"
+          "8. Закончить работу\n")
+    user_input = input()
+    return int(user_input) if user_input.isdigit() else None
+
+def read_txt(filename):
+    phone_book = []
+    fields = ['Фамилия', 'Имя', 'Телефон', 'Описание']
+    with open(filename, 'r', encoding='utf-8') as phb:
+        for line in phb:
+            parts = [x.strip() for x in line.strip().split(',')]
+            if len(parts) == 4:
+                record = dict(zip(fields, parts))
+                phone_book.append(record)
+    return phone_book
+
+def write_txt(filename, phone_book):
+    with open(filename, 'w', encoding='utf-8') as phout:
+        for record in phone_book:
+            s = ', '.join(record.values())
+            phout.write(f'{s}\n')
+
+def print_result(phone_book):
+    for record in phone_book:
+        print(f"{record['Фамилия']}, {record['Имя']}, {record['Телефон']}, {record['Описание']}")
+
+def find_by_lastname(phone_book, last_name):
+    results = [record for record in phone_book if record['Фамилия'] == last_name]
+    return results if results else "Абонент не найден"
+
+def change_number(phone_book, last_name, new_number):
+    for record in phone_book:
+        if record['Фамилия'] == last_name:
+            record['Телефон'] = new_number
+            return "Номер изменен"
+    return "Абонент не найден"
+
+def delete_by_lastname(phone_book, last_name):
+    for i, record in enumerate(phone_book):
+        if record['Фамилия'] == last_name:
+            del phone_book[i]
+            return "Абонент удален"
+    return "Абонент не найден"
+
+def find_by_number(phone_book, number):
+    results = [record for record in phone_book if record['Телефон'] == number]
+    return results if results else "Абонент не найден"
+
+def add_user(phone_book, user_data):
+    fields = ['Фамилия', 'Имя', 'Телефон', 'Описание']
+    parts = [x.strip() for x in user_data.split(',')]
+    if len(parts) == 4:
+        record = dict(zip(fields, parts))
+        phone_book.append(record)
+
+def read_line_from_file(filename, line_number):
+    with open(filename, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        if 1 <= line_number <= len(lines):
+            return lines[line_number - 1].strip()
+    return None
+
+def append_line_to_file(filename, line):
+    with open(filename, 'a', encoding='utf-8') as file:
+        file.write(line + '\n')
+
+def copy_data_between_files(source_file, target_file, line_number):
+    line = read_line_from_file(source_file, line_number)
+    if line:
+        append_line_to_file(target_file, line)
+        return f"Данные из строки {line_number} скопированы"
+    else:
+        return f"Некорректный номер строки {line_number}"
+
+work_with_phonebook()
